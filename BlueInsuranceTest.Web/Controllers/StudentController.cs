@@ -22,12 +22,12 @@ namespace BlueInsuranceTest.Web.Controllers
         }
 
         // GET: Student
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search, int? pageNumber)
         {
             try
             {
-                var list = await _studentService.Get(x => x.Id > 0);
-                return View(list.ToListViewModel());
+                ViewData["CurrentFilter"] = search;
+                return View(await _studentService.GetPaginatedList(search, pageNumber ?? 1, 5));
             }
             catch (Exception ex)
             {

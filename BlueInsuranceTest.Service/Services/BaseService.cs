@@ -1,5 +1,6 @@
 ﻿using BlueInsuranceTest.Domain.Entities;
 using BlueInsuranceTest.Domain.Interfaces;
+using BlueInsuranceTest.Domain.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +66,11 @@ namespace BlueInsuranceTest.Service.Services
             await _repository.Update(obj);
             await _repository.SaveChanges();
             return obj;
+        }
+
+        public async Task<PaginatedList<T>> GetPaginatedList(Expression<Func<T, bool>> filter, int pageNumber, int pageSize)
+        {
+            return await _repository.GetPaginatedList<T>(filter, pageNumber, pageSize);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BlueInsuranceTest.Domain.Entities;
+using BlueInsuranceTest.Domain.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -15,5 +16,6 @@ namespace BlueInsuranceTest.Domain.Interfaces
         Task<T> Get(long id, params string[] includes);
         Task<IList<T>> Get(Expression<Func<T, bool>> filter);
         Task<IList<T>> Get(Expression<Func<T, bool>> filter, params string[] includes);
+        Task<PaginatedList<T>> GetPaginatedList(Expression<Func<T, bool>> filter, int pageNumber, int pageSize);
     }
 }

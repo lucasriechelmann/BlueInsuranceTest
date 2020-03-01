@@ -1,6 +1,7 @@
 ﻿using BlueInsuranceTest.Data.Context;
 using BlueInsuranceTest.Domain.Entities;
 using BlueInsuranceTest.Domain.Interfaces;
+using BlueInsuranceTest.Domain.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,12 @@ namespace BlueInsuranceTest.Data.Repository
         public async Task<User> GetUser(long studentId)
         {
             return await _context.Users.Where(x => x.StudentId == studentId).FirstOrDefaultAsync();
+        }
+
+        public async Task<PaginatedList<T>> GetPaginatedList<T>(Expression<Func<T, bool>> filter, int pageNumber, int pageSize) where T : BaseEntity
+        {
+            var query = _context.Set<T>().Where(filter).Where(x => !x.DeletedDate.HasValue);
+            return await PaginatedList<T>.CreateAsync(query.AsNoTracking(), pageNumber, pageSize);
         }
     }
 }

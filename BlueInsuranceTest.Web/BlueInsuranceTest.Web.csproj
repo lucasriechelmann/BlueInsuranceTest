@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-BlueInsuranceTest.Web-5C0517CB-8B9E-4E56-8853-3C26DFC45356</UserSecretsId>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlueInsuranceTest.Data\BlueInsuranceTest.Data.csproj" />
+    <ProjectReference Include="..\BlueInsuranceTest.Domain\BlueInsuranceTest.Domain.csproj" />
+    <ProjectReference Include="..\BlueInsuranceTest.Service\BlueInsuranceTest.Service.csproj" />
+  </ItemGroup>
+
+</Project>

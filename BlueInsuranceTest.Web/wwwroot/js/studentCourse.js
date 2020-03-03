@@ -1,20 +1,29 @@
 ﻿setDeleteStudentCourseEvent();
 
 $('#searchCourses').click(function (e) {
+    setErrorMessageModal();
     $.ajax({
         type: 'GET',
         url: `/StudentCourse/GetCourses/?search=${$('#searchInput').val()}`,
         success: function (result) {
             createCoursesTable(result);
+        },
+        error: function (xhr) {
+            setErrorMessageModal(JSON.parse(xhr.responseText).error);
         }
     });
 });
 
 $('#addCourses').click(function (e) {
+    setErrorMessageModal();
     let courses = $('.form-check-input:checked').map((i, el) => el.getAttribute('data-id')).map((i, e) => parseInt(e)).toArray();
-    console.log(courses);
+    
+    if (!courses || courses.length > 5 || courses.length == 0) {
+        setErrorMessageModal(!courses ? 'Need to select one course' : (courses.length == 0 ? 'need to select one course' : 'max courses allowed per student is 5'));
+        return;
+    }
+
     let studentId = $('#studentId').val();
-    console.log(studentId);
     $.ajax({
         type: 'POST',
         url: `/StudentCourse/AddCourses/${studentId}`,
@@ -24,20 +33,21 @@ $('#addCourses').click(function (e) {
             addCoursesStudentTable(result);
             $('#coursesModal').modal('toggle');
         },
-        error: function (error) {
-            console.log(error);
+        error: function (xhr) {            
+            setErrorMessageModal(JSON.parse(xhr.responseText).error);
         }
     });
 });
 
 function setDeleteStudentCourseEvent() {
+    setErrorMessage();
     $('.btn-delete-course').click(function () {
         $.ajax({
             type: 'DELETE',
             url: `/StudentCourse/DeleteStudentCourse/${this.getAttribute('data-id')}`,
             success: (result) => $(this).closest('tr').remove(),
-            error: function (error) {
-                console.log(error);
+            error: function (xhr) {
+                setErrorMessage(JSON.parse(xhr.responseText).error);
             }
         });
     });
@@ -108,3 +118,23 @@ function formatDate(dateObject) {
 
     return date;
 };
+
+function setErrorMessageModal(message) {
+    if (!message) {
+        $('#modalError').css("display", "none");
+        return;
+    }
+    
+    $('#modalError').css("display","block");
+    $('#modalErrorMessage').text(message);
+}
+
+function setErrorMessage(message) {
+    if (!message) {
+        $('#error').css("display", "none");
+        return;
+    }
+
+    $('#error').css("display", "block");
+    $('#errorMessage').text(message);
+}

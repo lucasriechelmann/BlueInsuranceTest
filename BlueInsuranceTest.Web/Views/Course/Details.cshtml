@@ -6,7 +6,17 @@
 }
 
 <h1>Course</h1>
-
+@if (ViewData["errorMessage"] != null)
+{
+    <div class="row mb-3">
+        <div class="alert alert-danger alert-dismissible fade show col-sm-12">
+            @ViewData["errorMessage"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+}
 <div>
     <h4>Details</h4>
     <hr />
@@ -50,6 +60,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning btn-lg"}) 
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning btn-lg" })
     <a asp-action="Index" class="btn btn-light btn-lg">Back </a>
 </div>

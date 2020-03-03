@@ -44,7 +44,8 @@ namespace BlueInsuranceTest.Web.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                TempData["errorMessage"] = "Error student and courses";
+                return View();
             }
         }
 
@@ -53,12 +54,16 @@ namespace BlueInsuranceTest.Web.Controllers
         {
             try
             {
+                if (id < 0)
+                    throw new Exception();
+
                 var obj = await _studentService.Get(id);
                 return View(obj.ToViewModel());
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                TempData["errorMessage"] = "Error loading student";
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -79,17 +84,18 @@ namespace BlueInsuranceTest.Web.Controllers
             }
             catch
             {
-                return View();
+                ViewData["errorMessage"] = "Error to edit student";
+                return View(model);
             }
         }
 
         public async Task<IActionResult> GetCourses(string search)
-        {
-            if (string.IsNullOrEmpty(search))
-                return BadRequest();
-
+        {            
             try
             {
+                if (string.IsNullOrEmpty(search))
+                    throw new Exception();
+
                 var list = await _couseService
                     .Get(x => x.Code.ToLower().Contains(search.ToLower()) || 
                         x.Name.ToLower().Contains(search.ToLower()) || 
@@ -98,25 +104,25 @@ namespace BlueInsuranceTest.Web.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest();
+                return NotFound(new { Error = "Error to list courses"});
             }
         }
 
         [HttpPost]
         public async Task<IActionResult> AddCourses(long id, [FromBody]long[] courses)
-        {
-            if (courses == null || courses.Length > 5)
-                return BadRequest();
-
+        {            
             try
             {
+                if (courses == null || courses.Length > 5)
+                    throw new Exception();
+
                 await _studentCourseService.AddCourses(id, courses);
                 var list = await _studentCourseService.Get(x => x.StudentId == id, "Course");
                 return Json(list.ToListStudentCourseDetailViewModel());
             }
             catch(Exception ex)
             {
-                return BadRequest();
+                return NotFound(new { Error = "Error to add courses, max allowed per student is 5" });
             }
         }
 
@@ -133,7 +139,7 @@ namespace BlueInsuranceTest.Web.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest();
+                return NotFound(new { Error = "Error to delete course" });
             }            
         }
     }

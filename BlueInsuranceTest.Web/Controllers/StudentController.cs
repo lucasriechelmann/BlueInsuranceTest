@@ -31,7 +31,8 @@ namespace BlueInsuranceTest.Web.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                TempData["errorMessage"] = "Error loading courses";
+                return View();
             }
         }
 
@@ -40,12 +41,16 @@ namespace BlueInsuranceTest.Web.Controllers
         {
             try
             {
+                if (id < 0)
+                    throw new Exception();
+
                 var obj = await _studentService.Get(id);
                 return View(obj.ToViewModel());
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                TempData["errorMessage"] = "Error loading details";
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -72,7 +77,8 @@ namespace BlueInsuranceTest.Web.Controllers
             }
             catch
             {
-                return View();
+                ViewData["errorMessage"] = "Error to create course";
+                return View(model);
             }
         }
 
@@ -81,12 +87,16 @@ namespace BlueInsuranceTest.Web.Controllers
         {
             try
             {
+                if (id <= 0)
+                    throw new Exception();
+
                 var obj = await _studentService.Get(id);
                 return View(obj.ToViewModel());
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                TempData["errorMessage"] = "Error loading edit";
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -107,7 +117,8 @@ namespace BlueInsuranceTest.Web.Controllers
             }
             catch
             {
-                return View();
+                ViewData["errorMessage"] = "Error to edit course";
+                return View(model);
             }
         }
 
@@ -116,12 +127,16 @@ namespace BlueInsuranceTest.Web.Controllers
         {
             try
             {
+                if (id < 0)
+                    throw new Exception();
+
                 var obj = await _studentService.Get(id);
                 return View(obj.ToViewModel());
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                TempData["errorMessage"] = "Error loading delete";
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -139,6 +154,7 @@ namespace BlueInsuranceTest.Web.Controllers
             }
             catch
             {
+                ViewData["errorMessage"] = "Error to edit course";
                 return View(model);
             }
         }

@@ -4,6 +4,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h1>Details</h1>
+@if(@TempData["errorMessage"] != null)
+{
+<div class="row mb-3">
+    <div class="alert alert-danger alert-dismissible fade show col-sm-12">
+        <span>@TempData["errorMessage"]</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+}
+
+<div id="error" class="row mb-3" style="display: none;">
+    <div class="alert alert-danger alert-dismissible fade show col-sm-12">
+        <span id="errorMessage"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
 
 <div>
     <h4>Student</h4>
@@ -56,7 +76,7 @@
     </dl>    
 </div>
 <div>
-    <button class="btn btn-primary mb-2" data-toggle="modal" data-target="#coursesModal">Add Courses</button>
+    <button class="btn btn-primary mb-2" data-toggle="modal" data-target="#coursesModal">Courses</button>
 </div>
 <div>
     <table class="table">
@@ -139,6 +159,9 @@
             </div>
             <div class="modal-body">                
                 <div>
+                    <div id="modalError" class="alert alert-danger" style="display:none;">
+                        <span id="modalErrorMessage"></span>
+                    </div>
                     <table class="table">
                         <thead>
                             <tr>
